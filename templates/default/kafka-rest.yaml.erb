@@ -1,0 +1,58 @@
+instances:
+  - host: localhost
+    port: 9999 # This is the JMX port on which Kafka exposes its metrics (usually 9999)
+
+init_config:
+  is_jmx: true
+
+  conf:
+    - include:
+        domain: 'kafka.rest'
+        bean: 'kafka.rest:type=jetty-metrics'
+        attribute:
+          connections-active:
+            metric_type: gauge
+            alias: kafka-rest.con_active
+          connections-accepted-rate:
+            metric_type: gauge
+            alias: kafka-rest.con_acc_rate
+    - include:
+        domain: 'kafka.rest'
+        bean: 'kafka.rest:type=jersey-metrics'
+        attribute:
+          topic.produce-avro.request-byte-rate:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_byte_rate
+          topic.produce-avro.request-error-rate:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_error_rate
+          topic.produce-avro.request-latency-avg:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_request_latency
+          topic.produce-avro.request-rate:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_request_rate
+          topic.produce-avro.request-size-avg:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_request_avg
+          topic.produce-avro.response-rate:
+            metric_type: gauge
+            alias: kafka-rest.topic_produce_avro_response_rate
+          consumer.topic.read-avro.request-byte-rate:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_byte_rate
+          consumer.topic.read-avro.request-error-rate:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_error_rate
+          consumer.topic.read-avro.request-latency-avg:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_request_latency
+          consumer.topic.read-avro.request-rate:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_request_rate
+          consumer.topic.read-avro.request-size-avg:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_request_avg
+          consumer.topic.read-avro.response-rate:
+            metric_type: gauge
+            alias: kafka-rest.read_avro_response_rate

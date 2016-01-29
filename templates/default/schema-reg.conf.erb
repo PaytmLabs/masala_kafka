@@ -1,0 +1,16 @@
+start on runlevel 2
+
+script
+
+<% node["confluent"]["registry"]["env"].each do |k, v| -%>
+export <%= k %>="<%= v %>"
+<% end -%>
+
+cd node["confluent"]["install_dir"]
+./bin/schema-registry-start ./etc/schema-registry/schema-registry.properties
+
+end script
+
+respawn
+
+respawn limit 10 90

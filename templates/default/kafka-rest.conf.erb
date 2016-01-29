@@ -1,0 +1,16 @@
+start on runlevel 2
+
+script
+
+<% node["confluent"]["proxy"]["env"].each do |k, v| -%>
+export <%= k %>="<%= v %>"
+<% end -%>
+cd node["confluent"]["install_dir"]
+
+./bin/kafka-rest-start ./etc/kafka-rest/kafka-rest.properties
+
+end script
+
+respawn
+
+respawn limit 10 90

@@ -1,0 +1,205 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: 12.5.1
+  environments_path: ./test/environments
+  data_bags_path: ./test/data_bags
+  client_rb:
+    environment: kitchen
+
+platforms:
+  - name: centos67
+    driver_config:
+      box: boxcutter/centos67
+    attributes:
+      system:
+        primary_interface: eth1
+  - name: centos71
+    driver_config:
+      box: boxcutter/centos71
+    attributes:
+      system:
+        primary_interface: enp0s8
+  - name: centos72
+    driver_config:
+      box: boxcutter/centos72
+    attributes:
+      system:
+        primary_interface: enp0s8
+  - name: ubuntu1404
+    driver_config:
+      box: boxcutter/ubuntu1404
+    attributes:
+      system:
+        primary_interface: eth1
+  - name: ubuntu1504
+    driver_config:
+      box: boxcutter/ubuntu1504
+    attributes:
+      system:
+        primary_interface: eth1
+  - name: debian82
+    driver_config:
+      box: boxcutter/debian82
+    attributes:
+      system:
+        primary_interface: eth1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[masala_kafka::default]
+    driver:
+      synced_folders:
+        - [".shared_data", "/shared", mount_options: ["dmode=777,fmode=666"]]
+      network:
+      - ["private_network", {ip: "10.10.10.11"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    attributes:
+      system:
+        short_hostname: 'kafka-test1'
+        static_hosts:
+          10.10.10.11: kafka-test1.kitchen.masalatest.com
+          10.10.10.12: kafka-test2.kitchen.masalatest.com
+          10.10.10.13: kafka-test3.kitchen.masalatest.com
+          10.10.10.14: kafka-confluent.kitchen.masalatest.com
+      #exhibitor:
+      #  cli:
+      #    fsconfigdir: '/shared'
+      #zookeeper:
+      #  config:
+      #    initLimit: 5
+      #    syncLimit: 2
+      #    server:
+      #      "1": kafka-test1.kitchen.masalatest.com:2888:3888
+      #      "2": kafka-test2.kitchen.masalatest.com:2888:3888
+      #      "3": kafka-test3.kitchen.masalatest.com:2888:3888
+      masala_kafka:
+        zk_mode: zookeeper
+      kafka:
+        server.properties:
+          broker.id: 1
+  - name: default2
+    run_list:
+      - recipe[masala_kafka::mirror_maker]
+    driver:
+      synced_folders:
+        - [".shared_data", "/shared", mount_options: ["dmode=777,fmode=666"]]
+      network:
+      - ["private_network", {ip: "10.10.10.12"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    attributes:
+      system:
+        short_hostname: 'kafka-test2'
+        static_hosts:
+          10.10.10.11: kafka-test1.kitchen.masalatest.com
+          10.10.10.12: kafka-test2.kitchen.masalatest.com
+          10.10.10.13: kafka-test3.kitchen.masalatest.com
+          10.10.10.14: kafka-confluent.kitchen.masalatest.com
+      #exhibitor:
+      #  cli:
+      #    fsconfigdir: '/shared'
+      #zookeeper:
+      #  config:
+      #    initLimit: 5
+      #    syncLimit: 2
+      #    server:
+      #      "1": kafka-test1.kitchen.masalatest.com:2888:3888
+      #      "2": kafka-test2.kitchen.masalatest.com:2888:3888
+      #      "3": kafka-test3.kitchen.masalatest.com:2888:3888
+      kafka:
+        mirror_maker:
+          mirror_target.properties:
+            metadata.broker.list:
+              10.10.10.13:9092
+          mirror_source1.properties:
+            zookeeper.connect:
+              10.10.10.11:2181
+  - name: default3
+    run_list:
+      - recipe[masala_kafka::default]
+    driver:
+      synced_folders:
+        - [".shared_data", "/shared", mount_options: ["dmode=777,fmode=666"]]
+      network:
+      - ["private_network", {ip: "10.10.10.13"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    attributes:
+      system:
+        short_hostname: 'kafka-test3'
+        static_hosts:
+          10.10.10.11: kafka-test1.kitchen.masalatest.com
+          10.10.10.12: kafka-test2.kitchen.masalatest.com
+          10.10.10.13: kafka-test3.kitchen.masalatest.com
+          10.10.10.14: kafka-confluent.kitchen.masalatest.com
+      #exhibitor:
+      #  cli:
+      #    fsconfigdir: '/shared'
+      #    fsconfigname: 'exhibitor2.properties'
+      #zookeeper:
+      #  config:
+      #    initLimit: 5
+      #    syncLimit: 2
+      #    server:
+      #      "1": kafka-test1.kitchen.masalatest.com:2888:3888
+      #      "2": kafka-test2.kitchen.masalatest.com:2888:3888
+      #      "3": kafka-test3.kitchen.masalatest.com:2888:3888
+      masala_kafka:
+        zk_mode: zookeeper
+      kafka:
+        server.properties:
+          broker.id: 1
+  - name: confluent
+    run_list:
+      - recipe[masala_kafka::confluent_registry]
+      - recipe[masala_kafka::confluent_proxy]
+    driver:
+      synced_folders:
+        - [".shared_data", "/shared", mount_options: ["dmode=777,fmode=666"]]
+      network:
+      - ["private_network", {ip: "10.10.10.14"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    attributes:
+      system:
+        short_hostname: 'kafka-confluent'
+        static_hosts:
+          10.10.10.11: kafka-test1.kitchen.masalatest.com
+          10.10.10.12: kafka-test2.kitchen.masalatest.com
+          10.10.10.13: kafka-test3.kitchen.masalatest.com
+          10.10.10.14: kafka-confluent.kitchen.masalatest.com
+      #exhibitor:
+      #  cli:
+      #    fsconfigdir: '/shared'
+      #    fsconfigname: 'exhibitor2.properties'
+      #zookeeper:
+      #  config:
+      #    initLimit: 5
+      #    syncLimit: 2
+      #    server:
+      #      "1": kafka-test1.kitchen.masalatest.com:2888:3888
+      #      "2": kafka-test2.kitchen.masalatest.com:2888:3888
+      #      "3": kafka-test3.kitchen.masalatest.com:2888:3888
+      masala_kafka:
+        zk_mode: zookeeper
+      kafka:
+        server.properties:
+          broker.id: 1
+      confluent:
+        proxy:
+          conf:
+            zookeeper.connect: '10.10.10.11:2181'
+        registry:
+          conf:
+            kafkastore.connection.url: '10.10.10.11:2181'
+ 

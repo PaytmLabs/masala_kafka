@@ -1,0 +1,47 @@
+instances:
+  - host: localhost
+    port: 9998 # This is the JMX port on which Kafka exposes its metrics (usually 9999)
+
+init_config:
+  is_jmx: true
+
+  conf:
+    - include:
+        domain: 'kafka.schema.registry'
+        bean: 'kafka.schema.registry:type=jetty-metrics'
+        attribute:
+          connections-active:
+            metric_type: gauge
+            alias: schema-registry.con_active
+          connections-accepted-rate:
+            metric_type: gauge
+            alias: schema-registry.con_acc_rate
+    - include:
+        domain: 'kafka.schema.registry'
+        bean: 'kafka.schema.registry:type=jersey-metrics'
+        attribute:
+          schemas.ids.get-schema.request-rate:
+            metric_type: gauge
+            alias: schema-registry.get-schema-rate
+          schemas.ids.get-schema.request-latency-avg:
+            metric_type: gauge
+            alias: schema-registry.get-schema-latency
+          compatibility.subjects.versions.verify.request-rate:
+            metric_type: gauge
+            alias: schema-registry.compat-verify-rate
+          compatibility.subjects.versions.verify.request-latency-avg:
+            metric_type: gauge
+            alias: schema-registry.compat-verify-latency
+          subjects.get-schema.request-rate:
+            metric_type: gauge
+            alias: schema-registry.sub-get-schema-rate
+          subjects.get-schema.request-latency-avg:
+            metric_type: gauge
+            alias: schema-registry.sub-get-schema-latency
+          subjects.versions.get-schema.request-rate:
+            metric_type: gauge
+            alias: schema-registry.sub-ver-get-schema-rate
+          subjects.versions.get-schema.request-latency-avg:
+            metric_type: gauge
+            alias: schema-registry.sub-ver-get-schema-latency
+ 
