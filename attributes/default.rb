@@ -69,7 +69,7 @@ default['confluent']['registry']['log4j']['log4j.appender.requestAppender.File']
 
 default['confluent']['proxy']['stdout'] = File.join node['kafka']['log_dir'], "confluent_proxy_init_stdout.log"
 default['confluent']['proxy']['stderr'] = File.join node['kafka']['log_dir'], "confluent_proxy_init_stderr.log"
-default['confluent']['proxy']['env']['JMX_PORT'] = '9998'
+default['confluent']['proxy']['env']['JMX_PORT'] = '9996'
 default['confluent']['proxy']['env']['KAFKAREST_HEAP_OPTS'] = '-Xms1g -Xmx1g'
 default['confluent']['proxy']['env']['KAFKAREST_LOG4J_OPTS'] = "-Dlog4j.configuration=file:#{node['confluent']['install_link']}/etc/kafka-rest/log4j.properties"
 
