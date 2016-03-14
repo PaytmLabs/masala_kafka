@@ -65,5 +65,18 @@ if node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].ni
     instances node['datadog']['confluent-registry']['instances']
     cookbook 'masala_kafka'
   end
+
+  # port monitoring, should merge with others on host
+  node.set['datadog']['http_check']['instances'] ||= []
+  node.set['datadog']['http_check']['instances'] = node['datadog']['http_check']['instances'].to_a.push( {
+    :name => 'confluent-schema-port',
+    :url => 'http://localhost:8081/subjects',
+    :timeout => 1,
+    :collect_response_time => true
+  })
+  datadog_monitor 'http_check' do
+    instances node['datadog']['http_check']['instances']
+  end
+
 end
 
