@@ -122,6 +122,7 @@ suites:
           mirror_source1.properties:
             zookeeper.connect:
               10.10.10.11:2181
+            group.id: test-source-mirror
   - name: default3
     run_list:
       - recipe[masala_kafka::default]
