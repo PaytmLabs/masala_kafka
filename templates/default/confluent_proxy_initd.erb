@@ -17,7 +17,7 @@ SLEEP_TIME=5
 CURRENT_WAIT=0
 TIMEOUT=<%= node["kafka"]["shutdown_timeout"] %>
 
-<% if node["confluent"]["version"] < 2.0 %>
+<% if node["confluent"]["version"].to_f < 2.0 %>
 MAIN_CLASS=io.confluent.kafkarest.Main
 <% else %>
 MAIN_CLASS=io.confluent.kafkarest.KafkaRestMain
