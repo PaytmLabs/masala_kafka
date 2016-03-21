@@ -70,6 +70,15 @@ init_config:
           MeanRate:
             metric_type: gauge
             alias: kafka.net.bytes_rejected
+  <% node['masala_kafka']['topics_monitored'].each do |t| -%>
+    - include:
+        domain: 'kafka.server'
+        bean: 'kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=<%= t %>'
+        attribute:
+          MeanRate:
+            metric_type: gauge
+            alias: kafka.net.bytes_in
+   <% end -%>
 
     #
     # Request timings

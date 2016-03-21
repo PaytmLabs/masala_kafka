@@ -6,6 +6,10 @@ default["kafka"]["version"] = "0.8.2.2"
 # one of 'exhibitor', 'zookeeper', 'none' (default)
 default['masala_kafka']['zk_mode'] = 'none'
 default['masala_kafka']['zookeepers'] = ['localhost']
+
+# List of topics to get individual metrics
+default['masala_kafka']['topics_monitored'] = []
+
 # FIXME: move to masala_kafka
 default['kafka']['cluster_name'] = 'testcluster'
 
