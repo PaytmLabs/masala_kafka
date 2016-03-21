@@ -29,7 +29,10 @@ if node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].ni
           name: node['kafka']['cluster_name']
       }
   ]
-  include_recipe 'datadog::kafka'
+  include_recipe 'datadog::dd-agent'
+  datadog_monitor 'kafka' do
+    instances node['datadog']['kafka']['instances']
+    cookbook 'masala_kafka'
+  end
 end
-
 
