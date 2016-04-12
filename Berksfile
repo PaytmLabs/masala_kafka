@@ -19,7 +19,7 @@ cookbook 'exhibitor', :git => 'https://github.com/PaytmLabs/chef-exhibitor.git',
 cookbook 'masala_exhibitor', :git => 'https://github.com/PaytmLabs/masala_exhibitor.git', :ref => 'develop'
 
 # Dependencies of masala_kafka:
-cookbook 'cerner_kafka', :git => 'https://github.com/PaytmLabs/chef-cerner_kafka.git', :ref => 'feature-env-rework'
+cookbook 'cerner_kafka', :git => 'https://github.com/PaytmLabs/chef-cerner_kafka.git', :ref => 'feature-ulimit-fix'
 
 ## Now load the primary metadata
 metadata
