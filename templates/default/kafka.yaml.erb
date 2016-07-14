@@ -211,6 +211,13 @@ init_config:
           Count:
             metric_type: rate
             alias: kafka.net.bytes_in.rate
+    - include:
+        domain: 'kafka.server'
+        bean: 'kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec,topic=<%= t %>'
+        attribute:
+          Count:
+            metric_type: rate
+            alias: kafka.messages_in.rate
    <% end -%>
 
     #
