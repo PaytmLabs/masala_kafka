@@ -36,3 +36,17 @@ if node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].ni
   end
 end
 
+# register process monitor
+ruby_block "datadog-process-monitor-kafka" do
+  block do
+    node.set['masala_base']['dd_proc_mon']['kafka'] = {
+      search_string: ['kafka.Kafka'],
+      exact_match: false,
+      thresholds: {
+       critical: [1, 1]
+      }
+    }
+  end
+  only_if { node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].nil? }
+  notifies :run, 'ruby_block[datadog-process-monitors-render]'
+end

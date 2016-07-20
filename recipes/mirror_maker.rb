@@ -19,3 +19,18 @@
 include_recipe 'masala_base::default'
 include_recipe 'cerner_kafka::mirror_maker'
 
+# register process monitor
+ruby_block "datadog-process-monitor-kafka-mirrormaker" do
+  block do
+    node.set['masala_base']['dd_proc_mon']['kafka-mirrormaker'] = {
+      search_string: ['kafka.tools.MirrorMaker'],
+      exact_match: false,
+      thresholds: {
+       critical: [1, 1]
+      }
+    }
+  end
+  only_if { node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].nil? }
+  notifies :run, 'ruby_block[datadog-process-monitors-render]'
+end
+

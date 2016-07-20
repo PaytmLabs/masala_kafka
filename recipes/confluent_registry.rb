@@ -80,3 +80,17 @@ if node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].ni
 
 end
 
+# register process monitor
+ruby_block "datadog-process-monitor-confluent-registry" do
+  block do
+    node.set['masala_base']['dd_proc_mon']['confluent-registry'] = {
+      search_string: ['io.confluent.kafka.schemaregistry.rest.SchemaRegistryMain'],
+      exact_match: false,
+      thresholds: {
+       critical: [1, 1]
+      }
+    }
+  end
+  only_if { node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].nil? }
+  notifies :run, 'ruby_block[datadog-process-monitors-render]'
+end
