@@ -35,6 +35,9 @@ default["kafka"]["server.properties"]["num.partitions"] = 16
 default["kafka"]["server.properties"]["log.retention.hours"] = 4*7*24
 default["kafka"]["server.properties"]["default.replication.factor"] = 2
 
+# Add the GC logfile rotation
+default["kafka"]["env_vars"]["KAFKA_OPTS"] = "-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
+
 # For our local addition of confluent:
 default['confluent']['version'] = '1.0.1'
 default['confluent']['version_suffix'] = '2.10.4'
