@@ -69,7 +69,7 @@ stop() {
       fi
       
       sleep $SLEEP_TIME
-      CURRENT_WAIT=$CURRENT_WAIT+$SLEEP_TIME
+      let CURRENT_WAIT=$CURRENT_WAIT+$SLEEP_TIME
       if [ $CURRENT_WAIT -gt $TIMEOUT ]; then
         echo "Timed out waiting for Confluent Schema Registry to stop"
         exit 1
