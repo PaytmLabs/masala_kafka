@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'masala_base::default'
 include_recipe 'masala_kafka::confluent_install'
 
 template "#{node["confluent"]["install_dir"]}/etc/kafka-rest/kafka-rest.properties" do
@@ -81,17 +82,18 @@ if node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].ni
 end
 
 # register process monitor
-ruby_block "datadog-process-monitor-confluent-proxy" do
-  block do
-    node.set['masala_base']['dd_proc_mon']['confluent-proxy'] = {
-      search_string: ['io.confluent.kafkarest.KafkaRestMain'],
-      exact_match: false,
-      thresholds: {
-       critical: [1, 1]
+if node['masala_base']['dd_enable'] && !node['masala_base']['dd_api_key'].nil?
+  ruby_block "datadog-process-monitor-confluent-proxy" do
+    block do
+      node.set['masala_base']['dd_proc_mon']['confluent-proxy'] = {
+        search_string: ['io.confluent.kafkarest.KafkaRestMain'],
+        exact_match: false,
+        thresholds: {
+         critical: [1, 1]
+        }
       }
-    }
+    end
+    notifies :run, 'ruby_block[datadog-process-monitors-render]'
   end
-  only_if { node['masala_base']['dd_enable'] and not node['masala_base']['dd_api_key'].nil? }
-  notifies :run, 'ruby_block[datadog-process-monitors-render]'
 end
 
