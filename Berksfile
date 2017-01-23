@@ -15,7 +15,7 @@ cookbook 'masala_base', :git => 'https://github.com/PaytmLabs/masala_base.git', 
 cookbook 'masala_zookeeper', :git => 'https://github.com/PaytmLabs/masala_zookeeper.git', :ref => 'develop'
 
 # Dependencies of masala_exhibitor:
-cookbook 'exhibitor', :git => 'https://github.com/PaytmLabs/chef-exhibitor.git', :ref => 'fix-runit-pin'
+#cookbook 'exhibitor', :git => 'https://github.com/PaytmLabs/chef-exhibitor.git', :ref => 'fix-runit-pin'
 cookbook 'masala_exhibitor', :git => 'https://github.com/PaytmLabs/masala_exhibitor.git', :ref => 'develop'
 
 # Dependencies of masala_kafka:
