@@ -1,0 +1,5 @@
+{
+  "kafka_path": "<%= node["kafka"]["install_dir"] %>/kafka",
+  "log_path": "<%= node["kafka"]["server.properties"]["log.dirs"] %>",
+  "zk_path": "<%= node['masala_kafka']['zookeepers'].map { |z| "#{z}:2181" }.join(",") %>"
+}

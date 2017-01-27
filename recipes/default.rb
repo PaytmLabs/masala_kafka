@@ -36,4 +36,5 @@ include_recipe 'masala_exhibitor::default' if node['masala_kafka']['zk_mode'] ==
 include_recipe 'masala_zookeeper::default' if node['masala_kafka']['zk_mode'] == 'zookeeper'
 include_recipe 'cerner_kafka::default' 
 include_recipe 'masala_kafka::datadog'
+include_recipe 'masala_kafka::kafkat'
 

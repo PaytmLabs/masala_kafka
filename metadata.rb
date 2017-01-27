@@ -6,6 +6,8 @@ description      'Installs/Configures masala_kafka'
 long_description 'Installs/Configures masala_kafka'
 version          '0.1.0'
 
+depends          'poise-ruby', '~> 2.2.0'
+depends          'poise-ruby-build', '~> 1.0.2'
 depends          'masala_base', '~> 0.1.0'
 depends          'masala_zookeeper', '~> 0.1.0'
 depends          'masala_exhibitor', '~> 0.1.0'

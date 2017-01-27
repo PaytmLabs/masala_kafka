@@ -28,7 +28,7 @@ platforms:
       box: boxcutter/centos72
     attributes:
       system:
-        primary_interface: enp0s8
+        primary_interface: eth1
   - name: ubuntu1404
     driver_config:
       box: boxcutter/ubuntu1404
