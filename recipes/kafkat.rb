@@ -26,7 +26,7 @@ template "/etc/kafkatcfg" do
   source  "kafkatcfg.erb"
   owner 'root'
   group node['root_group']
-  mode  00755
+  mode  00644
 end
 
 link "/usr/local/bin/kafkat" do
